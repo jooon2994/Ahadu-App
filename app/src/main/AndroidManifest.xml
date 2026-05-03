@@ -6,7 +6,7 @@
 
     <application
         android:allowBackup="true"
-        android:label="Ahadu Market"
+        android:label="Ahadu"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false">
 
