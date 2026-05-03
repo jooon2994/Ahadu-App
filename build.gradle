@@ -1,33 +1,16 @@
-apply plugin: 'com.android.application'
-
-repositories {
-    google()
-    mavenCentral()
-}
-
-android {
-    compileSdk 34
-    namespace 'com.ahadumarket.app'
-
-    defaultConfig {
-        applicationId "com.ahadumarket.app"
-        minSdk 21
-        targetSdk 34
-        versionCode 1
-        versionName "1.0"
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
     }
-
-    buildTypes {
-        debug { debuggable true }
-        release { minifyEnabled false }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.2.0'
     }
 }
 
-dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
 }
