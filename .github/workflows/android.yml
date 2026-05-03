@@ -5,9 +5,6 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,6 +12,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Show repo structure
+        run: |
+          echo "=== ROOT ===" && ls -la
+          echo "=== app/ ===" && ls -la app/ 2>/dev/null || echo "NO app/ FOLDER"
+          echo "=== app/build.gradle ===" && cat app/build.gradle 2>/dev/null || echo "MISSING"
+          echo "=== settings.gradle ===" && cat settings.gradle
 
       - name: Set up JDK 17
         uses: actions/setup-java@v4
@@ -27,19 +31,13 @@ jobs:
         with:
           gradle-version: '8.4'
 
-      - name: Accept Android SDK licenses
-        run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
-
-      - name: Install Android SDK components
+      - name: Install Android SDK
         run: |
-          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager \
-            "platforms;android-34" \
-            "build-tools;34.0.0"
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platforms;android-34" "build-tools;34.0.0"
 
-      - name: Build Debug APK
-        run: gradle assembleDebug
-        env:
-          ANDROID_HOME: /usr/local/lib/android/sdk
+      - name: Build APK
+        run: gradle :app:assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
